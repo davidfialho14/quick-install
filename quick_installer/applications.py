@@ -94,7 +94,7 @@ class EnpassApplication(Application):
         return apt.is_package_installed('enpass')
 
 
-class SnapApplication(Application):
+class Snap(Application):
     snap = None
     options = None
 
@@ -115,31 +115,31 @@ class SnapApplication(Application):
         return snap.is_snap_installed(self.snap)
 
 
-class AtomApplication(SnapApplication):
+class AtomApplication(Snap):
     snap = 'atom'
     options = ['classic']
 
 
-class SlackApplication(SnapApplication):
+class SlackApplication(Snap):
     snap = 'slack'
     options = ['classic']
 
 
-class IntellijIDEAApplication(SnapApplication):
+class IntellijIDEAApplication(Snap):
     snap = 'intellij-idea-ultimate'
     options = ['classic']
 
 
-class PyCharmApplication(SnapApplication):
+class PyCharmApplication(Snap):
     snap = 'pycharm-professional'
     options = ['classic']
 
 
-class SublimeApplication(SnapApplication):
+class SublimeApplication(Snap):
     snap = 'sublime-text-3'
     options = ['classic', 'candidate']
 
 
-class SpotifyApplication(SnapApplication):
+class SpotifyApplication(Snap):
     snap = 'spotify'
     options = []
