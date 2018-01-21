@@ -71,20 +71,52 @@ class SeafileApplication(Application):
         return apt.is_package_installed('seafile-gui')
 
 
-class AtomApplication(Application):
+class SnapApplication(Application):
+    snap = None
+    options = None
 
     @property
     def name(self) -> str:
-        return "atom"
+        return self.snap
 
     def setup(self):
         pass
 
     def install(self):
-        snap.install('atom', options=['classic'])
+        snap.install(self.snap, self.options)
 
     def cleanup(self):
         pass
 
     def is_installed(self) -> bool:
-        return snap.is_snap_installed('atom')
+        return snap.is_snap_installed(self.snap)
+
+
+class AtomApplication(SnapApplication):
+    snap = 'atom'
+    options = ['classic']
+
+
+class SlackApplication(SnapApplication):
+    snap = 'slack'
+    options = ['classic']
+
+
+class IntellijIDEAApplication(SnapApplication):
+    snap = 'intellij-idea-ultimate'
+    options = ['classic']
+
+
+class PyCharmApplication(SnapApplication):
+    snap = 'pycharm-professional'
+    options = ['classic']
+
+
+class SublimeApplication(SnapApplication):
+    snap = 'sublime-text-3'
+    options = ['classic', 'candidate']
+
+
+class SpotifyApplication(SnapApplication):
+    snap = 'spotify'
+    options = []
