@@ -11,11 +11,11 @@ setup(
 
     packages=find_packages(),
 
-    install_requires=[],
+    install_requires=['docopt'],
 
     entry_points={
         'console_scripts': [
-
+            'quickall=quick_installer.cli:main'
         ],
     },
 
