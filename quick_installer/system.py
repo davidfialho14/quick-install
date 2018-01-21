@@ -4,7 +4,8 @@ import subprocess
 class System:
 
     def update(self):
-        cmd("apt-get update && apt-get upgrade")
+        cmd("apt-get update")
+        cmd("apt-get upgrade")
 
     def cleanup(self):
         cmd("apt-get autoremove")
