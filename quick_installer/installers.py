@@ -61,7 +61,11 @@ class SnapInstaller(Installer):
         apt.install('snapd', 'snap')
 
     def install(self, snap: str, options: List[str]):
-        cmd(f"snap install {snap} " + " ".join(f"--{option}" for option in options))
+        command = f"snap install {snap}"
+        if options:
+            command += " " + " ".join(f"--{option}" for option in options)
+
+        cmd(command)
 
     def is_snap_installed(self, snap: str) -> bool:
         return os.path.exists(f"/snap/{snap}")
