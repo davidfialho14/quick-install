@@ -2,11 +2,11 @@ from subprocess import CalledProcessError
 
 from docopt import docopt
 
-from quick_installer.install_system import install_system
+from quick_installer.install_system import install_system, install_app
 from quick_installer.repository import Repository
 
 
-def list():
+def list(repository: Repository):
     """
 The list command lists all applications available through Quick Installer.
 
@@ -15,25 +15,38 @@ Usage:
 """
     docopt(str(list.__doc__))
 
-    repository = Repository()
-
     print("APPLICATIONS")
     print("------------")
     for app in repository.all():
         print("-", app.name, "(Installed)" if app.is_installed() else "")
 
 
-def system():
+def system(repository: Repository):
     """
 The system command performs a system installation.
 
 Usage:
   quickall system
 """
-    docopt(str(list.__doc__))
+    docopt(str(system.__doc__))
 
     try:
-        install_system()
+        install_system(repository)
     except CalledProcessError as error:
         print(str(error))
 
+
+def install(repository: Repository):
+    """
+The install command install the specified application.
+
+Usage:
+  quickall install <application>
+"""
+    args = docopt(str(install.__doc__))
+    application_name = args['<application>']
+
+    try:
+        install_app(application_name, repository)
+    except CalledProcessError as error:
+        print(str(error))

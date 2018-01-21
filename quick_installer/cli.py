@@ -21,9 +21,12 @@ import sys
 from docopt import docopt
 
 from quick_installer import commands
+from quick_installer.repository import Repository
 
 command_by_name = {
     'list': commands.list,
+    'system': commands.system,
+    'install': commands.install,
 }
 
 
@@ -34,7 +37,7 @@ def main():
 
     try:
         command = command_by_name[command_name]
-        command()
+        command(repository=Repository())
     except KeyError:
         print(f"Command '{command_name}' was not recognized, see \"quickall --help\"",
               file=sys.stderr)

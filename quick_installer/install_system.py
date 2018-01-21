@@ -1,5 +1,4 @@
 import logging
-from subprocess import CalledProcessError
 
 from quick_installer import installers
 from quick_installer.repository import Repository
@@ -11,7 +10,29 @@ logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
 
-def install_system():
+def install_app(application_name: str, repository: Repository):
+    try:
+        application = repository.find_by_name(application_name)
+    except KeyError:
+        logger.error(f"Application '{application_name}' was not found")
+        return
+
+    if application.is_installed():
+        logger.warning(f"'{application.name}' is already installed")
+        return
+
+    logger.info("Preparing...")
+    application.setup()
+    installers.apt.update()
+
+    logger.info(f"Installing '{application.name}'...")
+    application.install()
+
+    logger.info(f"Cleaning up...")
+    logger.info(f"Application '{application.name}' was install successfully!")
+
+
+def install_system(repository: Repository):
     #
     # System Update
     #
@@ -25,8 +46,6 @@ def install_system():
     #
     # Install applications
     #
-    repository = Repository()
-
     for installer in installers.all():
         logger.info(f"Initializing '{installer.name}' installer...")
         installer.setup()
