@@ -1,5 +1,7 @@
 import logging
 
+import time
+
 from quick_installer import installers
 from quick_installer.repository import Repository
 from quick_installer.system import System
@@ -32,6 +34,8 @@ def install_app(application_name: str, repository: Repository):
 
 
 def install_system(repository: Repository):
+    start_time = time.time()
+
     #
     # System Update
     #
@@ -65,6 +69,11 @@ def install_system(repository: Repository):
         app.setup()
 
     logger.info("Checking repositories...")
+    # Wait a little bit if the installation was too fast to avoid issues when apt-get
+    # tries to get the lock
+    if time.time() - start_time < 10:
+        time.sleep(2)
+
     installers.apt.update()
 
     for app in non_installed_apps:
