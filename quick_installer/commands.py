@@ -30,6 +30,8 @@ Usage:
 """
     docopt(str(system.__doc__))
 
+    # TODO ensure sudo
+
     try:
         install_system(repository)
     except CalledProcessError as error:
@@ -45,6 +47,8 @@ Usage:
 """
     args = docopt(str(install.__doc__))
     application_name = args['<application>']
+
+    # TODO ensure sudo
 
     try:
         install_app(application_name, repository)

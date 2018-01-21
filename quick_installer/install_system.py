@@ -23,6 +23,7 @@ def install_app(application_name: str, repository: Repository):
 
     logger.info("Preparing...")
     application.setup()
+    # TODO avoid this update with snaps
     installers.apt.update()
 
     logger.info(f"Installing '{application.name}'...")
