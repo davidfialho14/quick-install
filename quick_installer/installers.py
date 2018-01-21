@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from subprocess import CalledProcessError
 from typing import List
 
+import os
+
 from quick_installer.system import cmd
 
 
@@ -48,7 +50,25 @@ class AptInstaller(Installer):
             return False
 
 
+# noinspection PyMethodMayBeStatic
+class SnapInstaller(Installer):
+
+    @property
+    def name(self) -> str:
+        return "Snap"
+
+    def setup(self):
+        apt.install('snapd', 'snap')
+
+    def install(self, snap: str, options: List[str]):
+        cmd(f"snap install {snap} " + " ".join(f"--{option}" for option in options))
+
+    def is_snap_installed(self, snap: str) -> bool:
+        return os.path.exists(f"/snap/{snap}")
+
+
 apt = AptInstaller()
+snap = SnapInstaller()
 
 
 def all() -> List[Installer]:
