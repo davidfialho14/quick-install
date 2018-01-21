@@ -3,6 +3,7 @@ from subprocess import CalledProcessError
 
 from quick_installer import installers
 from quick_installer.repository import Repository
+from quick_installer.system import System
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()
@@ -11,14 +12,25 @@ logger.setLevel(logging.INFO)
 
 
 def install_system():
+
+    #
+    # System Update
+    #
+    system = System()
+    logger.info("Updating system...")
+    system.update()
+    logger.info("Cleaning up...")
+    system.cleanup()
+    logger.info("System is up-to-date!\n")
+
+    #
+    # Install applications
+    #
     repository = Repository()
 
     for installer in installers.all():
         logger.info(f"Initializing '{installer.name}' installer...")
         installer.setup()
-
-    # TODO update system
-    # TODO Cleanup system
 
     all_apps = set(repository.system_apps())
     installed_apps = set(app for app in repository.system_apps() if app.is_installed())
@@ -35,7 +47,7 @@ def install_system():
     for app in non_installed_apps:
         app.setup()
 
-    logger.info("Updating available packages...")
+    logger.info("Checking repositories...")
     installers.apt.update()
 
     for app in non_installed_apps:

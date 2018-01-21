@@ -1,7 +1,8 @@
-import subprocess
 from abc import ABC, abstractmethod
-from subprocess import CalledProcessError, PIPE
+from subprocess import CalledProcessError
 from typing import List
+
+from quick_installer.system import cmd
 
 
 class Installer(ABC):
@@ -52,8 +53,3 @@ apt = AptInstaller()
 
 def all() -> List[Installer]:
     return [apt]
-
-
-def cmd(command: str) -> str:
-    process = subprocess.run(command.split(" "), stdout=PIPE, check=True)
-    return process.stdout.decode()
