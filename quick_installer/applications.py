@@ -1,9 +1,7 @@
 from quick_installer.application import Application
-from quick_installer.enable import Enabled
 from quick_installer.installers import apt
 
 
-@Enabled
 class SignalApplication(Application):
 
     @property

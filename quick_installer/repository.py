@@ -1,13 +1,8 @@
 import importlib
-from typing import Dict, Iterator, NamedTuple
+from typing import Dict, Iterator
 
+from quick_installer import settings
 from quick_installer.application import Application
-from quick_installer.enable import EnabledApplication
-
-
-class App(NamedTuple):
-    application: Application
-    enabled: bool
 
 
 class Repository:
@@ -16,7 +11,7 @@ class Repository:
     def __init__(self):
         # Stores a applications indexed by their names
         # For each application stores a set of attributes defined by 'AppAttributes'
-        self.applications: Dict[str, App] = {}
+        self.applications: Dict[str, Application] = {}
 
         # Load the module containing the applications
         apps_module = importlib.import_module(self.source)
@@ -26,23 +21,18 @@ class Repository:
 
             if isinstance(cls, type) and name.endswith("Application"):
                 if name == "Application":
-                    # Ignore the 'Application' interface
+                    # Ignore the generic 'Application'
                     continue
 
-                # Found an Application class that is disabled
+                # Found an Application class
                 application = cls()
-                self.applications[application.name] = App(application, enabled=False)
-
-            if isinstance(cls, EnabledApplication):
-                # Found an Application class that is enabled
-                application = cls()
-                self.applications[application.name] = App(application, enabled=True)
+                self.applications[application.name] = application
 
     def all(self) -> Iterator[Application]:
-        return iter(app.application for app in self.applications.values())
+        return iter(app for app in self.applications.values())
 
-    def enabled(self) -> Iterator[Application]:
-        return iter(app.application for app in self.applications.values() if app.enabled)
+    def system_apps(self) -> Iterator[Application]:
+        return iter(app for app in self.applications.values() if type(app) in settings.SYSTEM_APPS)
 
     def find_by_name(self, name: str) -> Application:
-        return self.applications[name].application
+        return self.applications[name]
