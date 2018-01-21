@@ -71,6 +71,29 @@ class SeafileApplication(Application):
         return apt.is_package_installed('seafile-gui')
 
 
+class EnpassApplication(Application):
+
+    @property
+    def name(self) -> str:
+        return "seafile"
+
+    def setup(self):
+        apt.add_source(
+            repository="deb http://repo.sinew.in/ stable main",
+            name="enpass",
+            key_url="https://dl.sinew.in/keys/enpass-linux.key"
+        )
+
+    def install(self):
+        apt.install('enpass')
+
+    def cleanup(self):
+        pass
+
+    def is_installed(self) -> bool:
+        return apt.is_package_installed('enpass')
+
+
 class SnapApplication(Application):
     snap = None
     options = None
