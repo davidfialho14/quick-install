@@ -1,8 +1,7 @@
 import os
 
 from quick_installer.application import Application
-from quick_installer.installers import apt
-from quick_installer.system import cmd
+from quick_installer.installers import apt, snap
 
 
 class SignalApplication(Application):
@@ -70,3 +69,22 @@ class SeafileApplication(Application):
 
     def is_installed(self) -> bool:
         return apt.is_package_installed('seafile-gui')
+
+
+class AtomApplication(Application):
+
+    @property
+    def name(self) -> str:
+        return "atom"
+
+    def setup(self):
+        pass
+
+    def install(self):
+        snap.install('atom', options=['classic'])
+
+    def cleanup(self):
+        pass
+
+    def is_installed(self) -> bool:
+        return snap.is_snap_installed('atom')
