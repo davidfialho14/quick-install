@@ -78,6 +78,7 @@ def install_system(repository: Repository):
 
     for app in non_installed_apps:
         logger.info(f"Installing '{app.name}'...'")
+        app.install()
 
     logger.info("Cleaning up...")
     for app in non_installed_apps:
