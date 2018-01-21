@@ -12,7 +12,6 @@ logger.setLevel(logging.INFO)
 
 
 def install_system():
-
     #
     # System Update
     #
@@ -58,14 +57,3 @@ def install_system():
         app.cleanup()
 
     logger.info("System was installed successfully!")
-
-
-def main():
-    try:
-        install_system()
-    except CalledProcessError as error:
-        print(str(error))
-
-
-if __name__ == '__main__':
-    main()

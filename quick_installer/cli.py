@@ -12,9 +12,9 @@ Options:
 
 Commands:
   list     Lists available applications
-  install  Install an application
+  install  Install an application (not supported yet)
   system   Perform a system installation
-  remove   Removes a directory
+  remove   Removes a directory (not supported yet)
 """
 import sys
 
