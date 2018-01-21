@@ -1,16 +1,29 @@
 import os
+from abc import abstractmethod
 
 from quick_installer.application import Application
 from quick_installer.installers import apt, snap
 
 
-class SignalApplication(Application):
+class AptPackage(Application):
+
+    @abstractmethod
+    def soft_setup(self):
+        pass
+
+    def setup(self, full=False):
+        self.soft_setup()
+        if full:
+            apt.update()
+
+
+class SignalApplication(AptPackage):
 
     @property
     def name(self) -> str:
         return "signal"
 
-    def setup(self):
+    def soft_setup(self):
         apt.add_source(
             repository="deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main",
             name="signal",
@@ -27,13 +40,13 @@ class SignalApplication(Application):
         return apt.is_package_installed('signal-desktop')
 
 
-class ChromeApplication(Application):
+class ChromeApplication(AptPackage):
 
     @property
     def name(self) -> str:
         return "chrome"
 
-    def setup(self):
+    def soft_setup(self):
         apt.add_source(
             repository="deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main",
             name="google",
@@ -52,13 +65,13 @@ class ChromeApplication(Application):
         return apt.is_package_installed('google-chrome-stable')
 
 
-class SeafileApplication(Application):
+class SeafileApplication(AptPackage):
 
     @property
     def name(self) -> str:
         return "seafile"
 
-    def setup(self):
+    def soft_setup(self):
         apt.add_ppa('ppa:seafile/seafile-client')
 
     def install(self):
@@ -71,13 +84,13 @@ class SeafileApplication(Application):
         return apt.is_package_installed('seafile-gui')
 
 
-class EnpassApplication(Application):
+class EnpassApplication(AptPackage):
 
     @property
     def name(self) -> str:
         return "seafile"
 
-    def setup(self):
+    def soft_setup(self):
         apt.add_source(
             repository="deb http://repo.sinew.in/ stable main",
             name="enpass",
@@ -102,7 +115,7 @@ class Snap(Application):
     def name(self) -> str:
         return self.snap
 
-    def setup(self):
+    def setup(self, full=False):
         pass
 
     def install(self):

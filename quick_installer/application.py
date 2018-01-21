@@ -9,7 +9,7 @@ class Application(ABC):
         pass
 
     @abstractmethod
-    def setup(self):
+    def setup(self, full=False):
         pass
 
     @abstractmethod
