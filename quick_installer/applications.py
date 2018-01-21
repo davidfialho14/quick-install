@@ -1,110 +1,44 @@
-import os
 from abc import abstractmethod
+from typing import NamedTuple
 
 from quick_installer.application import Application
 from quick_installer.installers import apt, snap
 
 
-class AptPackage(Application):
+class Source(NamedTuple):
+    repository: str
+    name: str
+    key_url: str
 
+
+class AptPackage(Application):
+    source: Source = None
+    ppa: str = None
+
+    @property
     @abstractmethod
-    def soft_setup(self):
+    def package(self) -> str:
         pass
 
     def setup(self, full=False):
-        self.soft_setup()
+
+        if self.source:
+            apt.add_source(*self.source)
+
+        if self.ppa:
+            apt.add_ppa(self.ppa)
+
         if full:
             apt.update()
 
-
-class SignalApplication(AptPackage):
-
-    @property
-    def name(self) -> str:
-        return "signal"
-
-    def soft_setup(self):
-        apt.add_source(
-            repository="deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main",
-            name="signal",
-            key_url="https://updates.signal.org/desktop/apt/keys.asc"
-        )
-
     def install(self):
-        apt.install('signal-desktop')
+        apt.install(self.package)
 
     def cleanup(self):
         pass
 
-    def is_installed(self) -> bool:
-        return apt.is_package_installed('signal-desktop')
-
-
-class ChromeApplication(AptPackage):
-
-    @property
-    def name(self) -> str:
-        return "chrome"
-
-    def soft_setup(self):
-        apt.add_source(
-            repository="deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main",
-            name="google",
-            key_url="https://dl-ssl.google.com/linux/linux_signing_key.pub"
-        )
-
-    def install(self):
-        apt.install('google-chrome-stable')
-
-    def cleanup(self):
-        # The google installer creates an extra source file that causes warnings and errors
-        # when updating system packages
-        os.remove("/etc/apt/sources.list.d/google-chrome.list")
-
-    def is_installed(self) -> bool:
-        return apt.is_package_installed('google-chrome-stable')
-
-
-class SeafileApplication(AptPackage):
-
-    @property
-    def name(self) -> str:
-        return "seafile"
-
-    def soft_setup(self):
-        apt.add_ppa('ppa:seafile/seafile-client')
-
-    def install(self):
-        apt.install('seafile-gui')
-
-    def cleanup(self):
-        pass
-
-    def is_installed(self) -> bool:
-        return apt.is_package_installed('seafile-gui')
-
-
-class EnpassApplication(AptPackage):
-
-    @property
-    def name(self) -> str:
-        return "seafile"
-
-    def soft_setup(self):
-        apt.add_source(
-            repository="deb http://repo.sinew.in/ stable main",
-            name="enpass",
-            key_url="https://dl.sinew.in/keys/enpass-linux.key"
-        )
-
-    def install(self):
-        apt.install('enpass')
-
-    def cleanup(self):
-        pass
-
-    def is_installed(self) -> bool:
-        return apt.is_package_installed('enpass')
+    def is_installed(self):
+        apt.is_package_installed(self.package)
 
 
 class Snap(Application):
@@ -126,6 +60,43 @@ class Snap(Application):
 
     def is_installed(self) -> bool:
         return snap.is_snap_installed(self.snap)
+
+
+class SignalApplication(AptPackage):
+    name = "signal"
+    package = 'signal-desktop'
+    source = Source(
+        repository="deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main",
+        name="signal",
+        key_url="https://updates.signal.org/desktop/apt/keys.asc"
+    )
+
+
+class ChromeApplication(AptPackage):
+    name = "chrome"
+    package = 'google-chrome-stable'
+    source = Source(
+        repository="deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main",
+        name="google-chrome",
+        key_url="https://dl-ssl.google.com/linux/linux_signing_key.pub"
+    )
+
+
+class SeafileApplication(AptPackage):
+    name = "seafile"
+    package = 'seafile-gui'
+    ppa = 'ppa:seafile/seafile-client'
+
+
+class EnpassApplication(AptPackage):
+    name = "enpass"
+    package = 'enpass'
+    ppa = 'ppa:seafile/seafile-client'
+    source = Source(
+        repository="deb http://repo.sinew.in/ stable main",
+        name="enpass",
+        key_url="https://dl.sinew.in/keys/enpass-linux.key"
+    )
 
 
 class AtomApplication(Snap):
