@@ -32,7 +32,7 @@ class Repository:
         return iter(app for app in self.applications.values())
 
     def system_apps(self) -> Iterator[Application]:
-        return iter(app for app in self.applications.values() if type(app) in settings.SYSTEM_APPS)
+        return iter(app for app in self.applications.values() if app.name in settings.SYSTEM_APPS)
 
     def find_by_name(self, name: str) -> Application:
         return self.applications[name]
