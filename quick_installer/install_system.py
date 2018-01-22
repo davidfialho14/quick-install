@@ -52,6 +52,7 @@ def install_system(repository: Repository):
     #
     logger.info("Installing packages...")
     installers.apt.install(*settings.SYSTEM_PACKAGES)
+    logger.info("All packages are installed!\n")
 
     #
     # Install applications
