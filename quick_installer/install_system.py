@@ -7,9 +7,6 @@ from quick_installer.repository import Repository
 from quick_installer.system import System
 
 logger = logging.getLogger()
-handler = logging.StreamHandler()
-logger.addHandler(handler)
-logger.setLevel(logging.INFO)
 
 
 def install_app(application_name: str, repository: Repository):

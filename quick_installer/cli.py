@@ -16,8 +16,10 @@ Commands:
   system   Perform a system installation
   remove   Removes a directory (not supported yet)
 """
+import logging
 import sys
 
+import coloredlogs
 from docopt import docopt
 
 from quick_installer import commands
@@ -29,8 +31,12 @@ command_by_name = {
     'install': commands.install,
 }
 
+logger = logging.getLogger()
+
 
 def main():
+    coloredlogs.install(fmt='%(levelname)s %(message)s')
+
     argv = sys.argv[1] if len(sys.argv) > 1 else []
     args = docopt(__doc__, argv, version="Quick Install v0.1")
     command_name = args['<command>']
