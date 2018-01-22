@@ -76,4 +76,4 @@ snap = SnapInstaller()
 
 
 def all() -> List[Installer]:
-    return [apt]
+    return [apt, snap]
