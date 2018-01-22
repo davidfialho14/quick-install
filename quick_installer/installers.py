@@ -30,7 +30,7 @@ class AptInstaller(Installer):
         self.install('software-properties-common')
 
     def add_ppa(self, ppa_repository: str):
-        cmd(f"apt-add-repository -y {ppa_repository}")
+        cmd(f"apt-add-repository -y {ppa_repository}", silent=True)
 
     def add_source(self, repository: str, name: str, key_url: str):
         cmd(f"curl -s {key_url} | apt-key add -")
@@ -44,7 +44,7 @@ class AptInstaller(Installer):
 
     def is_package_installed(self, package: str) -> bool:
         try:
-            cmd(f"dpkg -s {package}")
+            cmd(f"dpkg -s {package}", silent=True)
             return True
         except CalledProcessError:
             return False

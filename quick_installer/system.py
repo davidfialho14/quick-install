@@ -12,5 +12,10 @@ class System:
         cmd(f"apt-get autoremove {self.OPTIONS}")
 
 
-def cmd(command: str):
-    subprocess.run(command.split(" "), check=True)
+def cmd(command: str, silent=False):
+    stdout = stderr = None
+
+    if silent:
+        stdout = stderr = subprocess.DEVNULL
+
+    subprocess.run(command.split(" "), stderr=stderr, stdout=stdout, check=True)

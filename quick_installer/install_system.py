@@ -70,6 +70,7 @@ def install_system(repository: Repository):
 
     logger.info("Preparing installation...")
     for app in non_installed_apps:
+        logger.info(f"Installing {app.name}...")
         app.setup()
 
     logger.info("Checking repositories...")
