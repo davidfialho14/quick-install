@@ -6,7 +6,7 @@ class System:
 
     def update(self):
         cmd(f"apt-get update -qq")
-        cmd(f"apt-get upgrade {self.OPTIONS}")
+        cmd(f"apt-get dist-upgrade {self.OPTIONS}")
 
     def cleanup(self):
         cmd(f"apt-get autoremove {self.OPTIONS}")
