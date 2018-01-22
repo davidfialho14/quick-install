@@ -2,7 +2,7 @@ import logging
 
 import time
 
-from quick_installer import installers
+from quick_installer import installers, settings
 from quick_installer.repository import Repository
 from quick_installer.system import System
 
@@ -46,13 +46,19 @@ def install_system(repository: Repository):
     system.cleanup()
     logger.info("System is up-to-date!\n")
 
-    #
-    # Install applications
-    #
     for installer in installers.all():
         logger.info(f"Initializing '{installer.name}' installer...")
         installer.setup()
 
+    #
+    # Install packages
+    #
+    logger.info("Installing packages...")
+    installers.apt.install(*settings.SYSTEM_PACKAGES)
+
+    #
+    # Install applications
+    #
     all_apps = set(repository.system_apps())
     installed_apps = set(app for app in repository.system_apps() if app.is_installed())
     non_installed_apps = all_apps - installed_apps

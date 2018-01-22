@@ -13,3 +13,21 @@ SYSTEM_APPS = [
     'sublime-text-3',
     'spotify',
 ]
+
+# Packages to be installed when performing a system install
+SYSTEM_PACKAGES = [
+    # Tools
+    'gparted',
+    'synaptic',
+    'deluged',
+    'deluge-gtk',
+    'gnome-tweak-tool',
+    'vim',
+
+    # Programming
+    'build-essential',
+    'git',
+    'default-jdk',
+    'python3-pip',
+    'firefox',
+]
