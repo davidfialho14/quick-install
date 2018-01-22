@@ -2,16 +2,16 @@
 
 # Applications to be installed when performing a system install
 SYSTEM_APPS = [
-    'signal',
-    'chrome',
-    'seafile',
-    'enpass',
-    'atom',
-    'slack',
-    'intellij-idea-ultimate',
+#    'signal',
+#    'chrome',
+#    'seafile',
+#    'enpass',
+#    'atom',
+#    'slack',
+#    'intellij-idea-ultimate',
     'pycharm-professional',
-    'sublime-text-3',
-    'spotify',
+#    'sublime-text-3',
+#   'spotify',
 ]
 
 # Packages to be installed when performing a system install

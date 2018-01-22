@@ -37,10 +37,10 @@ class AptInstaller(Installer):
         cmd(f"echo \"{repository}\" | tee -a /etc/apt/sources.list.d/{name}.list")
 
     def update(self):
-        cmd("apt-get update")
+        cmd("apt-get update -qq")
 
     def install(self, *packages: str):
-        cmd("apt-get install -y " + " ".join(packages))
+        cmd("apt-get install -yqq --show-progress -o Dpkg::Progress-Fancy=true " + " ".join(packages))
 
     def is_package_installed(self, package: str) -> bool:
         try:

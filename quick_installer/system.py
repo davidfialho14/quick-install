@@ -2,15 +2,15 @@ import subprocess
 
 
 class System:
+    OPTIONS = "-yqq --show-progress -o Dpkg::Progress-Fancy=true"
 
     def update(self):
-        cmd("apt-get update")
-        cmd("apt-get upgrade")
+        cmd(f"apt-get update -qq")
+        cmd(f"apt-get upgrade {self.OPTIONS}")
 
     def cleanup(self):
-        cmd("apt-get autoremove")
+        cmd(f"apt-get autoremove {self.OPTIONS}")
 
 
-def cmd(command: str) -> str:
-    process = subprocess.run(command.split(" "), stdout=subprocess.PIPE, check=True)
-    return process.stdout.decode()
+def cmd(command: str):
+    subprocess.run(command.split(" "), check=True)
