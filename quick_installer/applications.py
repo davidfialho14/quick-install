@@ -38,7 +38,7 @@ class AptPackage(Application):
         pass
 
     def is_installed(self):
-        apt.is_package_installed(self.package)
+        return apt.is_package_installed(self.package)
 
 
 class Snap(Application):

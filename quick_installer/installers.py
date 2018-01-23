@@ -1,7 +1,6 @@
 import os
 import shutil
 from abc import ABC, abstractmethod
-from pathlib import Path
 from subprocess import CalledProcessError
 from tempfile import mkstemp
 from typing import List
@@ -75,15 +74,15 @@ class SnapInstaller(Installer):
     def setup(self):
         apt.install('snapd', 'snap')
 
-    def install(self, snap: str, options: List[str]):
-        command = f"snap install {snap}"
+    def install(self, snap_name: str, options: List[str]):
+        command = f"snap install {snap_name}"
         if options:
             command += " " + " ".join(f"--{option}" for option in options)
 
         cmd(command)
 
-    def is_snap_installed(self, snap: str) -> bool:
-        return os.path.exists(f"/snap/{snap}")
+    def is_snap_installed(self, snap_name: str) -> bool:
+        return os.path.exists(f"/snap/{snap_name}")
 
 
 apt = AptInstaller()
