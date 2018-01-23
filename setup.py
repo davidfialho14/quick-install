@@ -11,8 +11,6 @@ setup(
 
     packages=find_packages(),
 
-    install_requires=['docopt', 'coloredlogs'],
-
     entry_points={
         'console_scripts': [
             'quickall=quick_installer.cli:main'

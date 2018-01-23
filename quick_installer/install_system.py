@@ -1,5 +1,4 @@
 import logging
-
 import time
 
 from quick_installer import installers, settings
