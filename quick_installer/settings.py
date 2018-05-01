@@ -8,9 +8,9 @@ SYSTEM_APPS = [
     'enpass',
     'atom',
     'slack',
-    'intellij-idea-ultimate',
-    'pycharm-professional',
-    'sublime-text-3',
+    'intellij-idea-community',
+    'pycharm-community',
+    'sublime-text',
     'spotify',
 ]
 

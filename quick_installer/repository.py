@@ -2,7 +2,7 @@ import importlib
 from typing import Dict, Iterator
 
 from quick_installer import settings
-from quick_installer.application import Application
+from quick_installer.app import Application
 
 
 class Repository:

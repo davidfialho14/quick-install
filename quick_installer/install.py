@@ -75,7 +75,7 @@ def install_system(repository: Repository):
     # Wait a little bit if the installation was too fast to avoid issues when apt-get
     # tries to get the lock
     if time.time() - start_time < 10:
-        time.sleep(2)
+        time.sleep(5)
 
     installers.apt.update()
 

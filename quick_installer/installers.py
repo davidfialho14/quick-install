@@ -64,7 +64,6 @@ class AptInstaller(Installer):
             return False
 
 
-# noinspection PyMethodMayBeStatic
 class SnapInstaller(Installer):
 
     @property

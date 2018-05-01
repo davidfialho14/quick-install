@@ -2,7 +2,7 @@ from subprocess import CalledProcessError
 
 from docopt import docopt
 
-from quick_installer.install_system import install_system, install_app
+from quick_installer.install import install_system, install_app
 from quick_installer.repository import Repository
 
 
