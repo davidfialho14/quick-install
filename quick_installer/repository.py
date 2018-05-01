@@ -6,7 +6,7 @@ from quick_installer.app import Application
 
 
 class Repository:
-    source = 'quick_installer.applications'
+    source = 'quick_installer.apps'
 
     def __init__(self):
         # Stores a applications indexed by their names
