@@ -2,6 +2,7 @@ from abc import abstractmethod
 from typing import NamedTuple
 
 from quick_installer.app import Application
+from quick_installer.installers import apt
 
 
 class Source(NamedTuple):
